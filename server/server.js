@@ -1,22 +1,40 @@
-const express = require('express');
-const path = require('path');
+const Koa = require('koa');
+const Router = require('koa-router');
 
-const app = express();
-const port = process.env.PORT || 5000;
+const app = new Koa();
+const router = new Router();
 
-// API calls
-app.get('/api/hello', (req, res) => {
-  res.send({ express: 'Hello From Express' });
+const PORT = process.env.PORT || 5000;
+
+// logger
+app.use(async (ctx, next) => {
+    await next();
+    const rt = ctx.response.get('X-Response-Time');
+    console.log(`${ctx.method} ${ctx.url} - ${rt}`);
 });
 
-if (process.env.NODE_ENV === 'production') {
-  // Serve any static files
-  app.use(express.static(path.join(__dirname, '../client/build')));
+// x-response-time
+app.use(async (ctx, next) => {
+    const start = Date.now();
+    await next();
+    const ms = Date.now() - start;
+    ctx.set('X-Response-Time', `${ms}ms`);
+});
 
-  // Handle React routing, return all requests to React app
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-  });
-}
+// response
+/*app.use(async ctx => {
+    ctx.body = 'Hello World';
+});*/
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+router
+    .get('/api/users', (ctx, next) => {
+        ctx.body = { message: 'Users' };
+        console.log('REQUEST');
+    });
+
+app
+    .use(router.routes())
+    .use(router.allowedMethods())
+    .use(require('koa-static')(__dirname + '/../client/build'));
+
+app.listen(PORT, console.log(`API server started on ${PORT}`));
