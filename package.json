@@ -20,7 +20,8 @@
     "express": "^4.16.3",
     "koa": "^2.5.2",
     "koa-router": "^7.4.0",
-    "koa-static": "^5.0.0"
+    "koa-static": "^5.0.0",
+    "mongoose": "^5.2.7"
   },
   "devDependencies": {
     "concurrently": "^3.6.0"
