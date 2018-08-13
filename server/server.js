@@ -3,7 +3,7 @@ const Router = require('koa-router');
 const mongoose = require('mongoose');
 
 const app = new Koa();
-const router = new Router();
+const router = new Router({ prefix: '/api'});
 
 const PORT = process.env.PORT || 5000;
 mongoose.connect('mongodb://Dongor7:SidarDen19940209@ds219832.mlab.com:19832/client-server');
@@ -23,16 +23,8 @@ app.use(async (ctx, next) => {
     ctx.set('X-Response-Time', `${ms}ms`);
 });
 
-// response
-/*app.use(async ctx => {
-    ctx.body = 'Hello World';
-});*/
-
-router
-    .get('/api/users', (ctx, next) => {
-        ctx.body = { message: 'Users' };
-        console.log('REQUEST');
-    });
+// API routes
+require('./routes')(router);
 
 app
     .use(router.routes())
