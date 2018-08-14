@@ -1,40 +1,55 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import logo from './logo.svg';
 
 import './App.css';
 
 class App extends Component {
-  state = {
-    response: ''
-  };
+    state = {
+        user: {
+            email: '',
+            password: ''
+        },
+        userList: null
+    };
 
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.message }))
-      .catch(err => console.log(err));
-  }
+    componentDidMount() {
+        this.getUsers();
+    }
 
-  callApi = async () => {
-    const response = await fetch('/api/users');
-    const body = await response.json();
+    getUsers = () => {
+        axios
+            .get('/api/')
+            .then(function (response) {
+                this.setState({ userList: response});
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    };
 
-    if (response.status !== 200) throw Error(body.message);
+    addUser = async () => {
 
-    return body;
-  };
+    };
 
-  render() {
+render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">{this.state.response}</p>
-      </div>
+        <div className="App">
+            <form>
+
+            </form>
+            <ul>
+                {
+                    this.state.userList.forEach((user) => {
+                        return <li>Email: {user.email}, Password: {user.password}</li>
+                    })
+                }
+            </ul>
+        </div>
     );
-  }
+}
 }
 
 export default App;
