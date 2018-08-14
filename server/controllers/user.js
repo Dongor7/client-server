@@ -1,9 +1,7 @@
 const User = require('../models/User');
 
-
 async function add(ctx) {
-    const newUser = new User(ctx.request.body.user);
-    ctx.body = await newUser.save();
+    ctx.body = await User.create(ctx.request.body);
 }
 
 async function getAll(ctx) {
@@ -11,8 +9,6 @@ async function getAll(ctx) {
 }
 
 module.exports = {
-
     add,
     getAll
-
 };

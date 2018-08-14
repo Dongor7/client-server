@@ -3,10 +3,10 @@ const Router = require('koa-router');
 const mongoose = require('mongoose');
 
 const app = new Koa();
-const router = new Router({ prefix: '/api'});
+const router = new Router();
 
 const PORT = process.env.PORT || 5000;
-mongoose.connect('mongodb://Dongor7:SidarDen19940209@ds219832.mlab.com:19832/client-server');
+mongoose.connect('mongodb://Dongor7:SidarDen19940209@ds219832.mlab.com:19832/client-server', { useNewUrlParser: true });
 
 // logger
 app.use(async (ctx, next) => {

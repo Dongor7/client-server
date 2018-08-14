@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import logo from './logo.svg';
+import UserForm from './Components/Form';
 
 import './App.css';
 
@@ -20,7 +20,7 @@ class App extends Component {
 
     getUsers = () => {
         axios
-            .get('/api/')
+            .get('/users')
             .then(function (response) {
                 this.setState({ userList: response});
                 console.log(response);
@@ -37,14 +37,12 @@ class App extends Component {
 render() {
     return (
         <div className="App">
-            <form>
-
-            </form>
+            <UserForm/>
             <ul>
                 {
-                    this.state.userList.forEach((user) => {
+                    /*this.state.userList.forEach((user) => {
                         return <li>Email: {user.email}, Password: {user.password}</li>
-                    })
+                    })*/
                 }
             </ul>
         </div>
